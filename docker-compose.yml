@@ -1,0 +1,41 @@
+version: "3.7"
+
+services:
+    app:
+        build: .
+        container_name: php-upstream
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+        networks:
+            - app-network
+
+    nginx:
+        image: nginx:alpine
+        container_name: php-nginx
+        ports:
+            - 8000:80
+        volumes:
+            - ./:/var/www
+            - ./nginx/conf.d/:/etc/nginx/conf.d/
+        networks:
+            - app-network
+
+    db:
+        image: mysql:8
+        container_name: mysql-db
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: payroll
+            MYSQL_USER: tidio
+            MYSQL_PASSWORD: oidit
+        expose:
+            - 3306
+        ports:
+            - "3306:3306"
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
