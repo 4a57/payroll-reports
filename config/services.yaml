@@ -11,3 +11,9 @@ services:
         autowire: false      # Automatically injects dependencies in your services.
         autoconfigure: false # Automatically registers your services as commands, event subscribers, etc.
         public: false
+
+    app.generate_payroll_report_command:
+        class: App\Infrastructure\Symfony\Command\GeneratePayrollReport
+        public: true
+        tags:
+            - { name: 'console.command', command: 'app:generate-payroll-report' }
