@@ -6,3 +6,9 @@ start: stop
 
 stop:
 	docker-compose down
+
+cli-php:
+	docker-compose run --rm app bash
+
+run-tests:
+	docker-compose run --rm app php vendor/bin/phpunit
