@@ -25,7 +25,7 @@ services:
         image: mysql:8
         container_name: mysql-db
         environment:
-            MYSQL_ROOT_PASSWORD: password
+            MYSQL_ROOT_PASSWORD: oidit
             MYSQL_DATABASE: payroll
             MYSQL_USER: tidio
             MYSQL_PASSWORD: oidit

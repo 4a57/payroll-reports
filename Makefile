@@ -1,5 +1,6 @@
 build:
 	docker-compose build
+	docker-compose run --rm app composer install
 
 start: stop
 	docker-compose up -d

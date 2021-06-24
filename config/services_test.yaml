@@ -1,0 +1,9 @@
+services:
+    test.test_helper:
+        class: Tests\Functional\TestHelper
+        arguments:
+            - '@test.fake_clock'
+        public: true
+
+    test.fake_clock:
+        class: Tests\Fake\Clock

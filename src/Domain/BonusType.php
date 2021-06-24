@@ -6,6 +6,10 @@ namespace App\Domain;
 
 use MyCLabs\Enum\Enum;
 
+/**
+ * @method static BonusType FIXED()
+ * @method static BonusType PERCENTAGE()
+ */
 class BonusType extends Enum
 {
     private const FIXED = 1;
