@@ -24,6 +24,7 @@ class GeneratePayrollReport extends Command
     private const OPTION_FILTER = 'filter';
 
     protected static $defaultName = 'app:generate-payroll-report';
+    protected static $defaultDescription = 'Generate payroll report with for whole company';
 
     private MessageBusInterface $messageBus;
     private PayrollViewSerializer $serializer;

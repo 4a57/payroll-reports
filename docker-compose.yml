@@ -13,17 +13,6 @@ services:
             db:
                 condition: service_healthy
 
-    nginx:
-        image: nginx:alpine
-        container_name: php-nginx
-        ports:
-            - 8000:80
-        volumes:
-            - ./:/var/www
-            - ./nginx/conf.d/:/etc/nginx/conf.d/
-        networks:
-            - app-network
-
     db:
         image: mysql:8
         container_name: mysql-db

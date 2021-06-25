@@ -13,7 +13,7 @@ stop:
 	docker-compose down
 
 cli-php:
-	docker-compose run --rm app bash
+	docker-compose exec app bash
 
 run-tests: init-tests simple-tests stop-tests
 
