@@ -37,6 +37,7 @@ services:
         arguments:
             - '@app.employee_repository'
             - '@app.payroll_view_factory'
+            - '@app.sorting_applicator'
         tags: [{ name: messenger.message_handler, bus: query.bus }]
         autoconfigure: false
 
@@ -65,3 +66,6 @@ services:
 
     app.clock:
         class: App\Infrastructure\System\Clock
+
+    app.sorting_applicator:
+        class: App\Application\Sorting\SortingApplicator

@@ -6,6 +6,9 @@ namespace Tests\Functional\Application;
 
 use App\Application\GetPayrollReportQuery;
 use App\Application\PayrollView;
+use App\Application\Sorting\Sorting;
+use App\Application\Sorting\SortingDirection;
+use App\Application\Sorting\SortingField;
 use App\Domain\BonusType;
 use App\Domain\Department;
 use App\Domain\Employee;
@@ -33,12 +36,14 @@ class GetPayrollReportQueryHandlerTest extends FunctionalTest
         $this->testHelper->addEmployee($employeeAK);
         $this->testHelper->addEmployee($employeeAN);
 
-        $envelope = $this->testHelper->getMessageBus()->dispatch(new GetPayrollReportQuery());
+        $envelope = $this->testHelper->getMessageBus()->dispatch(
+            new GetPayrollReportQuery(new Sorting(SortingField::FIRST_NAME(), SortingDirection::ASC()))
+        );
         /** @var PayrollView[] $payrollViews */
         $payrollViews = $envelope->last(HandledStamp::class)->getResult();
 
         $this->assertCount(2, $payrollViews);
-        $this->assertSame(200000, $payrollViews[0]->getTotalSalary());
-        $this->assertSame(121000, $payrollViews[1]->getTotalSalary());
+        $this->assertSame(200000, $payrollViews[0]->totalSalary);
+        $this->assertSame(121000, $payrollViews[1]->totalSalary);
     }
 }

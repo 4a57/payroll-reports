@@ -92,4 +92,38 @@ TXT;
 
         $this->assertSame($expectedOutput, $output);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_show_report_in_proper_order(): void
+    {
+        $departmentHr = new Department(1, 'HR', BonusType::FIXED(), 10000);
+        $departmentCustomService = new Department(2, 'Custom Service', BonusType::PERCENTAGE(), 10);
+        $this->testHelper->addDepartment($departmentHr);
+        $this->testHelper->addDepartment($departmentCustomService);
+
+        Clock::setDateTime(new \DateTimeImmutable('2020-01-01 00:00:00'));
+        $fifteenYearsAgo = $this->testHelper->getClock()->getDateTime()->modify('-15 years');
+        $fiveYearsAgo = $this->testHelper->getClock()->getDateTime()->modify('-5 years');
+        $employeeAK = new Employee(1, 'Adam', 'Kowalski', $departmentHr, 100000, $fifteenYearsAgo);
+        $employeeAN = new Employee(2, 'Ania', 'Nowak', $departmentCustomService, 110000, $fiveYearsAgo);
+        $this->testHelper->addEmployee($employeeAK);
+        $this->testHelper->addEmployee($employeeAN);
+
+        $this->commandTester->execute(['--sort' => 'lastName', '--sort-direction' => 'desc']);
+        $output = $this->commandTester->getDisplay();
+
+        $expectedOutput = <<<TXT
++------------+-----------+----------------+-------------+--------------+------------+--------------+
+| First name | Last name | Department     | Base salary | Bonus salary | Bonus type | Total salary |
++------------+-----------+----------------+-------------+--------------+------------+--------------+
+| Ania       | Nowak     | Custom Service | 1100        | 110          | percentage | 1210         |
+| Adam       | Kowalski  | HR             | 1000        | 1000         | fixed      | 2000         |
++------------+-----------+----------------+-------------+--------------+------------+--------------+
+
+TXT;
+
+        $this->assertSame($expectedOutput, $output);
+    }
 }

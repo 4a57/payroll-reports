@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application;
 
+use App\Application\Sorting\SortingApplicator;
 use App\Domain\Employee;
 use App\Domain\EmployeeRepository;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -12,11 +13,16 @@ class GetPayrollReportQueryHandler implements MessageHandlerInterface
 {
     private EmployeeRepository $employeeRepository;
     private PayrollViewFactory $payrollViewFactory;
+    private SortingApplicator $sortingApplicator;
 
-    public function __construct(EmployeeRepository $employeeRepository, PayrollViewFactory $payrollViewFactory)
-    {
+    public function __construct(
+        EmployeeRepository $employeeRepository,
+        PayrollViewFactory $payrollViewFactory,
+        SortingApplicator $sortingApplicator
+    ) {
         $this->employeeRepository = $employeeRepository;
         $this->payrollViewFactory = $payrollViewFactory;
+        $this->sortingApplicator = $sortingApplicator;
     }
 
     /**
@@ -31,6 +37,7 @@ class GetPayrollReportQueryHandler implements MessageHandlerInterface
             },
             $employees
         );
+        $payrollViews = $this->sortingApplicator->sort($payrollViews, $query->getSorting());
 
         return $payrollViews;
     }

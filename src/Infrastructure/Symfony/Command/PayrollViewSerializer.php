@@ -11,13 +11,13 @@ class PayrollViewSerializer
     public function toCommandOutputArray(PayrollView $payroll): array
     {
         return [
-            $payroll->getFirstName(),
-            $payroll->getLastName(),
-            $payroll->getDepartmentName(),
-            (string) ($payroll->getBaseSalary() / 100),
-            (string) ($payroll->getBonusSalary() / 100),
-            $payroll->getBonusType(),
-            (string) ($payroll->getTotalSalary() / 100),
+            $payroll->firstName,
+            $payroll->lastName,
+            $payroll->departmentName,
+            (string) ($payroll->baseSalary / 100),
+            (string) ($payroll->bonusSalary / 100),
+            $payroll->bonusType,
+            (string) ($payroll->totalSalary / 100),
         ];
     }
 }

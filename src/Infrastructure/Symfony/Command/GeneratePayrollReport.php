@@ -6,15 +6,21 @@ namespace App\Infrastructure\Symfony\Command;
 
 use App\Application\GetPayrollReportQuery;
 use App\Application\PayrollView;
+use App\Application\Sorting\Sorting;
+use App\Application\Sorting\SortingDirection;
+use App\Application\Sorting\SortingField;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 class GeneratePayrollReport extends Command
 {
+    const OPTION_SORT = 'sort';
+    const OPTION_SORT_DIRECTION = 'sort-direction';
     protected static $defaultName = 'app:generate-payroll-report';
 
     private MessageBusInterface $messageBus;
@@ -28,9 +34,33 @@ class GeneratePayrollReport extends Command
         parent::__construct();
     }
 
+    protected function configure()
+    {
+        $this->addOption(
+            self::OPTION_SORT,
+            's',
+            InputOption::VALUE_OPTIONAL,
+            \sprintf('Sort by field [%s]', \implode(', ', SortingField::toArray())),
+            SortingField::FIRST_NAME()->getValue()
+        );
+        $this->addOption(
+            self::OPTION_SORT_DIRECTION,
+            'd',
+            InputOption::VALUE_OPTIONAL,
+            \sprintf('Sort direction [%s]', \implode(', ', SortingField::toArray())),
+            SortingDirection::ASC()->getValue()
+        );
+        parent::configure();
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $envelope = $this->messageBus->dispatch(new GetPayrollReportQuery());
+        $sortingField = new SortingField($input->getOption(self::OPTION_SORT));
+        $sortingDirection = new SortingDirection($input->getOption(self::OPTION_SORT_DIRECTION));
+
+        $envelope = $this->messageBus->dispatch(
+            new GetPayrollReportQuery(new Sorting($sortingField, $sortingDirection))
+        );
         /** @var PayrollView[] $payrollViews */
         $payrollViews = $envelope->last(HandledStamp::class)->getResult();
 
