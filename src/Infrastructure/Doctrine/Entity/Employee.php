@@ -28,7 +28,7 @@ class Employee
     private int $baseSalary;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private int $hiredAt;
+    private \DateTimeImmutable $hiredAt;
 
     public function __construct(
         int $id,
@@ -36,7 +36,7 @@ class Employee
         string $lastName,
         Department $department,
         int $baseSalary,
-        int $hiredAt
+        \DateTimeImmutable $hiredAt
     ) {
         $this->id = $id;
         $this->firstName = $firstName;
@@ -71,7 +71,7 @@ class Employee
         return $this->baseSalary;
     }
 
-    public function getHiredAt(): int
+    public function getHiredAt(): \DateTimeImmutable
     {
         return $this->hiredAt;
     }

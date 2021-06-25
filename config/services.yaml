@@ -8,6 +8,22 @@ services:
 
     app.generate_payroll_report_command:
         class: App\Infrastructure\Symfony\Command\GeneratePayrollReport
-        public: true
+        arguments:
+            - '@app.employee_repository'
         tags:
             - { name: 'console.command', command: 'app:generate-payroll-report' }
+        public: true
+
+    app.employee_repository:
+        class: App\Infrastructure\Doctrine\EmployeeRepository
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@app.employee_mapper'
+
+    app.employee_mapper:
+        class: App\Infrastructure\Doctrine\EmployeeMapper
+        arguments:
+            - '@app.department_mapper'
+
+    app.department_mapper:
+        class: App\Infrastructure\Doctrine\DepartmentMapper

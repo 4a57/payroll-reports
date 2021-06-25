@@ -3,6 +3,7 @@ services:
         class: Tests\Functional\TestHelper
         arguments:
             - '@test.fake_clock'
+            - '@doctrine.dbal.default_connection'
         public: true
 
     test.fake_clock:

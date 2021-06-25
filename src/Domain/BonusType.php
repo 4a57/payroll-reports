@@ -12,6 +12,6 @@ use MyCLabs\Enum\Enum;
  */
 class BonusType extends Enum
 {
-    private const FIXED = 1;
-    private const PERCENTAGE = 2;
+    private const FIXED = 'fixed';
+    private const PERCENTAGE = 'percentage';
 }
