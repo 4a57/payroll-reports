@@ -21,7 +21,7 @@ class FilterApplicator
 
     private function checkValue(string $filter, PayrollView $view): bool
     {
-        $filterHaystack = \sprintf('%s %s %s', $view->departmentName, $view->firstName, $view->lastName);
+        $filterHaystack = \sprintf('%s %s %s', $view->department, $view->firstName, $view->lastName);
 
         return \str_contains(\mb_strtolower($filterHaystack), \mb_strtolower($filter));
     }

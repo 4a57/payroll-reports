@@ -13,7 +13,7 @@ class PayrollViewSerializer
         return [
             $payroll->firstName,
             $payroll->lastName,
-            $payroll->departmentName,
+            $payroll->department,
             (string) ($payroll->baseSalary / 100),
             (string) ($payroll->bonusSalary / 100),
             $payroll->bonusType,

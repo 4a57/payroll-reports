@@ -73,9 +73,9 @@ SQL;
 
     public function clearDatabase(): void
     {
-        $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS = 0;');
+        $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS = 0');
         $this->connection->executeQuery('TRUNCATE TABLE employees');
         $this->connection->executeQuery('TRUNCATE TABLE departments');
-        $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS = 1;');
+        $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

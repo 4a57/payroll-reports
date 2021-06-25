@@ -8,7 +8,7 @@ class PayrollView
 {
     public string $firstName;
     public string $lastName;
-    public string $departmentName;
+    public string $department;
     public int $baseSalary;
     public int $bonusSalary;
     public string $bonusType;
@@ -17,7 +17,7 @@ class PayrollView
     public function __construct(
         string $name,
         string $surname,
-        string $departmentName,
+        string $department,
         int $baseSalary,
         int $bonusSalary,
         string $bonusType,
@@ -25,7 +25,7 @@ class PayrollView
     ) {
         $this->firstName = $name;
         $this->lastName = $surname;
-        $this->departmentName = $departmentName;
+        $this->department = $department;
         $this->baseSalary = $baseSalary;
         $this->bonusSalary = $bonusSalary;
         $this->bonusType = $bonusType;

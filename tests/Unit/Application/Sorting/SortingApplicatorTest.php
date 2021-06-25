@@ -52,13 +52,13 @@ class SortingApplicatorTest extends TestCase
                 'expected top' => self::EMPLOYEE_ANIA,
                 'sort'         => new Sorting(SortingField::LAST_NAME(), SortingDirection::DESC()),
             ],
-            'department name ASC'  => [
+            'department ASC'  => [
                 'expected top' => self::EMPLOYEE_ANIA,
-                'sort'         => new Sorting(SortingField::DEPARTMENT_NAME(), SortingDirection::ASC()),
+                'sort'         => new Sorting(SortingField::DEPARTMENT(), SortingDirection::ASC()),
             ],
-            'department name DESC' => [
+            'department DESC' => [
                 'expected top' => self::EMPLOYEE_ADAM,
-                'sort'         => new Sorting(SortingField::DEPARTMENT_NAME(), SortingDirection::DESC()),
+                'sort'         => new Sorting(SortingField::DEPARTMENT(), SortingDirection::DESC()),
             ],
             'base salary ASC'      => [
                 'expected top' => self::EMPLOYEE_ADAM,

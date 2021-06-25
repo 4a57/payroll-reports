@@ -5,13 +5,17 @@ build:
 start: stop
 	docker-compose up -d
 
+feed-by-data:
+	docker-compose exec app php bin/console doctrine:schema:create
+	docker-compose exec app php bin/console doctrine:database:import fixtures.sql
+
 stop:
 	docker-compose down
 
 cli-php:
 	docker-compose run --rm app bash
 
-run-tests: init-tests simple-tests
+run-tests: init-tests simple-tests stop-tests
 
 init-tests: stop-tests
 	docker-compose -f docker-compose-test.yml up -d
@@ -23,6 +27,4 @@ stop-tests:
 simple-tests:
 	docker-compose -f docker-compose-test.yml exec test-app php vendor/bin/phpunit
 
-
-cli-php-test:
-	docker-compose -f docker-compose-test.yml exec test-app bash
+run-from-scratch: build run-tests start feed-by-data cli-php
