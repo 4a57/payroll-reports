@@ -38,6 +38,7 @@ services:
             - '@app.employee_repository'
             - '@app.payroll_view_factory'
             - '@app.sorting_applicator'
+            - '@app.filter_applicator'
         tags: [{ name: messenger.message_handler, bus: query.bus }]
         autoconfigure: false
 
@@ -69,3 +70,6 @@ services:
 
     app.sorting_applicator:
         class: App\Application\Sorting\SortingApplicator
+
+    app.filter_applicator:
+        class: App\Application\Filter\FilterApplicator

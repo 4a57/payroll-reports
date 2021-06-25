@@ -19,8 +19,10 @@ use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 class GeneratePayrollReport extends Command
 {
-    const OPTION_SORT = 'sort';
-    const OPTION_SORT_DIRECTION = 'sort-direction';
+    private const OPTION_SORT = 'sort';
+    private const OPTION_SORT_DIRECTION = 'sort-direction';
+    private const OPTION_FILTER = 'filter';
+
     protected static $defaultName = 'app:generate-payroll-report';
 
     private MessageBusInterface $messageBus;
@@ -50,6 +52,13 @@ class GeneratePayrollReport extends Command
             \sprintf('Sort direction [%s]', \implode(', ', SortingField::toArray())),
             SortingDirection::ASC()->getValue()
         );
+        $this->addOption(
+            self::OPTION_FILTER,
+            'f',
+            InputOption::VALUE_OPTIONAL,
+            'Filter by combined department, first name, and last name'
+        );
+
         parent::configure();
     }
 
@@ -57,9 +66,10 @@ class GeneratePayrollReport extends Command
     {
         $sortingField = new SortingField($input->getOption(self::OPTION_SORT));
         $sortingDirection = new SortingDirection($input->getOption(self::OPTION_SORT_DIRECTION));
+        $filter = $input->getOption(self::OPTION_FILTER);
 
         $envelope = $this->messageBus->dispatch(
-            new GetPayrollReportQuery(new Sorting($sortingField, $sortingDirection))
+            new GetPayrollReportQuery(new Sorting($sortingField, $sortingDirection), $filter)
         );
         /** @var PayrollView[] $payrollViews */
         $payrollViews = $envelope->last(HandledStamp::class)->getResult();
