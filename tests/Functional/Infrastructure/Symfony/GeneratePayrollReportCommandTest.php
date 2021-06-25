@@ -2,32 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional;
+namespace Tests\Functional\Infrastructure\Symfony;
 
 use App\Domain\BonusType;
 use App\Domain\Department;
 use App\Domain\Employee;
 use Tests\Fake\Clock;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
+use Tests\Functional\FunctionalTest;
 
-class GeneratePayrollReportCommandTest extends KernelTestCase
+class GeneratePayrollReportCommandTest extends FunctionalTest
 {
     private CommandTester $commandTester;
-    private TestHelper $testHelper;
 
     protected function setUp(): void
     {
-        $application = new Application(static::createKernel());
+        parent::setUp();
+
+        $application = new Application(static::$kernel);
         $command = $application->find('app:generate-payroll-report');
         $this->commandTester = new CommandTester($command);
-
-        $this->testHelper = static::getContainer()->get('test.test_helper');
-
-        $this->testHelper->clearDatabase();
-
-        parent::setUp();
     }
 
     /**
@@ -69,7 +64,6 @@ TXT;
      */
     public function it_should_show_report_with_bonus(): void
     {
-        $this->markTestSkipped();
         $departmentHr = new Department(1, 'HR', BonusType::FIXED(), 10000);
         $departmentCustomService = new Department(2, 'Custom Service', BonusType::PERCENTAGE(), 10);
         $this->testHelper->addDepartment($departmentHr);
@@ -90,8 +84,8 @@ TXT;
 +------------+-----------+----------------+-------------+--------------+------------+--------------+
 | First name | Last name | Department     | Base salary | Bonus salary | Bonus type | Total salary |
 +------------+-----------+----------------+-------------+--------------+------------+--------------+
-| Adam       | Kowalski  | HR             | 1000        | 0            | fixed      | 1000         |
-| Ania       | Nowak     | Custom Service | 1100        | 0            | percentage | 1100         |
+| Adam       | Kowalski  | HR             | 1000        | 1000         | fixed      | 2000         |
+| Ania       | Nowak     | Custom Service | 1100        | 110          | percentage | 1210         |
 +------------+-----------+----------------+-------------+--------------+------------+--------------+
 
 TXT;

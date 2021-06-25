@@ -12,4 +12,12 @@ class Clock implements DomainClock
     {
         return new \DateTimeImmutable();
     }
+
+    public function getDiffInYears(\DateTimeImmutable $date): int
+    {
+        $currentDate = $this->getDateTime();
+        $diff = $currentDate->diff($date)->y;
+
+        return $currentDate > $date ? $diff : -$diff;
+    }
 }

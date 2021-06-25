@@ -4,51 +4,63 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Symfony\Command;
 
-use App\Domain\Employee;
-use App\Domain\EmployeeRepository;
+use App\Application\GetPayrollReportQuery;
+use App\Application\PayrollView;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 class GeneratePayrollReport extends Command
 {
     protected static $defaultName = 'app:generate-payroll-report';
 
-    private EmployeeRepository $employeeRepository;
+    private MessageBusInterface $messageBus;
+    private PayrollViewSerializer $serializer;
 
-    public function __construct(EmployeeRepository $employeeRepository)
+    public function __construct(MessageBusInterface $messageBus, PayrollViewSerializer $serializer)
     {
-        $this->employeeRepository = $employeeRepository;
+        $this->messageBus = $messageBus;
+        $this->serializer = $serializer;
 
         parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $employees = $this->employeeRepository->getAll();
+        $envelope = $this->messageBus->dispatch(new GetPayrollReportQuery());
+        /** @var PayrollView[] $payrollViews */
+        $payrollViews = $envelope->last(HandledStamp::class)->getResult();
 
         $reportTable = new Table($output);
-        $reportTable->setHeaders(
-            ['First name', 'Last name', 'Department', 'Base salary', 'Bonus salary', 'Bonus type', 'Total salary']
-        );
-
-        $tableView = \array_map(static function (Employee $employee): array {
-            return [
-                $employee->getFirstName(),
-                $employee->getLastName(),
-                $employee->getDepartment()->getName(),
-                $employee->getBaseSalary() / 100,
-                $employee->getDepartment()->getBonusValue() / 100,
-                $employee->getDepartment()->getBonusType()->getValue(),
-                $employee->getBaseSalary() / 100,
-            ];
-        }, $employees);
-
-        $reportTable->setRows($tableView);
+        $this->drawHeader($reportTable);
+        $this->drawBody($payrollViews, $reportTable);
 
         $reportTable->render();
 
         return Command::SUCCESS;
+    }
+
+    protected function drawHeader(Table $reportTable): void
+    {
+        $reportTable->setHeaders(
+            ['First name', 'Last name', 'Department', 'Base salary', 'Bonus salary', 'Bonus type', 'Total salary']
+        );
+    }
+
+    /**
+     * @param PayrollView[] $payrollViews
+     */
+    private function drawBody(array $payrollViews, Table $reportTable): void
+    {
+        $tableBody = \array_map(
+            function (PayrollView $payrollView): array {
+                return $this->serializer->toCommandOutputArray($payrollView);
+            },
+            $payrollViews
+        );
+        $reportTable->setRows($tableBody);
     }
 }

@@ -9,10 +9,14 @@ services:
     app.generate_payroll_report_command:
         class: App\Infrastructure\Symfony\Command\GeneratePayrollReport
         arguments:
-            - '@app.employee_repository'
+            - '@messenger.default_bus'
+            - '@app.payroll_view_serializer'
         tags:
             - { name: 'console.command', command: 'app:generate-payroll-report' }
         public: true
+
+    app.payroll_view_serializer:
+        class: App\Infrastructure\Symfony\Command\PayrollViewSerializer
 
     app.employee_repository:
         class: App\Infrastructure\Doctrine\EmployeeRepository
@@ -27,3 +31,37 @@ services:
 
     app.department_mapper:
         class: App\Infrastructure\Doctrine\DepartmentMapper
+
+    app.query_handler.get_payroll_report:
+        class: App\Application\GetPayrollReportQueryHandler
+        arguments:
+            - '@app.employee_repository'
+            - '@app.payroll_view_factory'
+        tags: [{ name: messenger.message_handler, bus: query.bus }]
+        autoconfigure: false
+
+    app.payroll_view_factory:
+        class: App\Application\PayrollViewFactory
+        arguments:
+            - '@app.bonus_calculator'
+            - '@app.clock'
+
+    app.bonus_calculator:
+        class: App\Domain\BonusCalculator\BonusCalculator
+        arguments:
+            - '@app.bonus_calculator.strategy_resolver'
+
+    app.bonus_calculator.strategy_resolver:
+        class: App\Domain\BonusCalculator\Strategy\StrategyResolver
+        arguments:
+            - '@app.bonus_calculator.percentage_strategy'
+            - '@app.bonus_calculator.fixed_strategy'
+
+    app.bonus_calculator.percentage_strategy:
+        class: App\Domain\BonusCalculator\Strategy\PercentageStrategy
+
+    app.bonus_calculator.fixed_strategy:
+        class: App\Domain\BonusCalculator\Strategy\FixedStrategy
+
+    app.clock:
+        class: App\Infrastructure\System\Clock

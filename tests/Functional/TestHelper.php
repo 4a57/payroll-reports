@@ -4,25 +4,34 @@ declare(strict_types=1);
 
 namespace Tests\Functional;
 
+use App\Application\GetPayrollReportQueryHandler;
 use App\Domain\Clock;
 use App\Domain\Department;
 use App\Domain\Employee;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class TestHelper
 {
     private Clock $clock;
     private Connection $connection;
+    private MessageBusInterface $messageBus;
 
-    public function __construct(Clock $clock, Connection $connection)
+    public function __construct(Clock $clock, Connection $connection, MessageBusInterface $messageBus)
     {
         $this->clock = $clock;
         $this->connection = $connection;
+        $this->messageBus = $messageBus;
     }
 
     public function getClock(): Clock
     {
         return $this->clock;
+    }
+
+    public function getMessageBus(): MessageBusInterface
+    {
+        return $this->messageBus;
     }
 
     public function addDepartment(Department $department): void

@@ -2,9 +2,10 @@ services:
     test.test_helper:
         class: Tests\Functional\TestHelper
         arguments:
-            - '@test.fake_clock'
+            - '@app.clock'
             - '@doctrine.dbal.default_connection'
+            - '@messenger.default_bus'
         public: true
 
-    test.fake_clock:
+    app.clock:
         class: Tests\Fake\Clock
