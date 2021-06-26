@@ -7,6 +7,7 @@ namespace Tests\Functional\Infrastructure\Symfony;
 use App\Domain\BonusType;
 use App\Domain\Department;
 use App\Domain\Employee;
+use Symfony\Component\Console\Command\Command;
 use Tests\Fake\Clock;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -23,6 +24,17 @@ class GeneratePayrollReportCommandTest extends FunctionalTest
         $application = new Application(static::$kernel);
         $command = $application->find('app:generate-payroll-report');
         $this->commandTester = new CommandTester($command);
+    }
+
+    public function it_should_return_validation_error()
+    {
+        $this->commandTester->execute(['--sort', 'someInvalidField']);
+
+        $status = $this->commandTester->getStatusCode();
+        $output = $this->commandTester->getDisplay();
+
+        $this->assertSame(Command::INVALID, $status);
+        $this->assertStringContainsString('Validation error', $output);
     }
 
     /**
@@ -44,6 +56,7 @@ class GeneratePayrollReportCommandTest extends FunctionalTest
         $this->testHelper->addEmployee($employeeAN);
 
         $this->commandTester->execute([]);
+        $status = $this->commandTester->getStatusCode();
         $output = $this->commandTester->getDisplay();
 
         $expectedOutput = <<<TXT
@@ -56,6 +69,7 @@ class GeneratePayrollReportCommandTest extends FunctionalTest
 
 TXT;
 
+        $this->assertSame(Command::SUCCESS, $status);
         $this->assertSame($expectedOutput, $output);
     }
 
@@ -78,6 +92,7 @@ TXT;
         $this->testHelper->addEmployee($employeeAN);
 
         $this->commandTester->execute([]);
+        $status = $this->commandTester->getStatusCode();
         $output = $this->commandTester->getDisplay();
 
         $expectedOutput = <<<TXT
@@ -90,6 +105,7 @@ TXT;
 
 TXT;
 
+        $this->assertSame(Command::SUCCESS, $status);
         $this->assertSame($expectedOutput, $output);
     }
 
@@ -112,6 +128,7 @@ TXT;
         $this->testHelper->addEmployee($employeeAN);
 
         $this->commandTester->execute(['--sort' => 'lastName', '--sort-direction' => 'desc']);
+        $status = $this->commandTester->getStatusCode();
         $output = $this->commandTester->getDisplay();
 
         $expectedOutput = <<<TXT
@@ -124,6 +141,7 @@ TXT;
 
 TXT;
 
+        $this->assertSame(Command::SUCCESS, $status);
         $this->assertSame($expectedOutput, $output);
     }
 
@@ -146,6 +164,7 @@ TXT;
         $this->testHelper->addEmployee($employeeAN);
 
         $this->commandTester->execute(['--filter' => 'hR']);
+        $status = $this->commandTester->getStatusCode();
         $output = $this->commandTester->getDisplay();
 
         $expectedOutput = <<<TXT
@@ -157,6 +176,7 @@ TXT;
 
 TXT;
 
+        $this->assertSame(Command::SUCCESS, $status);
         $this->assertSame($expectedOutput, $output);
     }
 
@@ -181,6 +201,7 @@ TXT;
         $this->testHelper->addEmployee($employeeKP);
 
         $this->commandTester->execute(['--sort' => 'totalSalary', '--sort-direction' => 'desc', '--filter' => 'hR']);
+        $status = $this->commandTester->getStatusCode();
         $output = $this->commandTester->getDisplay();
 
         $expectedOutput = <<<TXT
@@ -193,6 +214,7 @@ TXT;
 
 TXT;
 
+        $this->assertSame(Command::SUCCESS, $status);
         $this->assertSame($expectedOutput, $output);
     }
 }

@@ -17,6 +17,6 @@ class BonusCalculatorStrategyException extends DomainException
 
     public static function strategyNotFound(BonusType $bonusType): self
     {
-        return new self(\sprintf('Strategy not found for bonus type %s', $bonusType->getValue()));
+        return new self(\sprintf('Calculation strategy not found for bonus type %s', $bonusType->getValue()));
     }
 }

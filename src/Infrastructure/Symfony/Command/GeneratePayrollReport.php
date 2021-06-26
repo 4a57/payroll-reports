@@ -65,8 +65,15 @@ class GeneratePayrollReport extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $sortingField = new SortingField($input->getOption(self::OPTION_SORT));
-        $sortingDirection = new SortingDirection($input->getOption(self::OPTION_SORT_DIRECTION));
+        try {
+            $sortingField = new SortingField($input->getOption(self::OPTION_SORT));
+            $sortingDirection = new SortingDirection($input->getOption(self::OPTION_SORT_DIRECTION));
+        } catch (\UnexpectedValueException $exception) {
+            $output->writeln(\sprintf('Validation error: %s', $exception->getMessage()));
+
+            return Command::INVALID;
+        }
+
         $filter = $input->getOption(self::OPTION_FILTER);
 
         $envelope = $this->messageBus->dispatch(
