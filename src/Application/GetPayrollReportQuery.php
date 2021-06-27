@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Application;
 
-use App\Application\Filter\Filter;
-use App\Application\Sorting\Sorting;
+use App\Domain\Payroll\Filter\Filter;
+use App\Domain\Payroll\Sorting\Sorting;
 
 class GetPayrollReportQuery
 {

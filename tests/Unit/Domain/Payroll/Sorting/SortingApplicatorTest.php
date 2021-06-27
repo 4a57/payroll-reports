@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Application\Sorting;
+namespace Tests\Unit\Domain\Payroll\Sorting;
 
-use App\Application\PayrollView;
-use App\Application\Sorting\Sorting;
-use App\Application\Sorting\SortingApplicator;
-use App\Application\Sorting\SortingDirection;
-use App\Application\Sorting\SortingField;
+use App\Domain\Payroll\PayrollView;
+use App\Domain\Payroll\Sorting\Sorting;
+use App\Domain\Payroll\Sorting\SortingApplicator;
+use App\Domain\Payroll\Sorting\SortingDirection;
+use App\Domain\Payroll\Sorting\SortingField;
 use PHPUnit\Framework\TestCase;
 
 class SortingApplicatorTest extends TestCase

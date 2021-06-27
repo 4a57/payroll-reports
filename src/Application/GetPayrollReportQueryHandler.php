@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Application;
 
-use App\Application\Filter\FilterApplicator;
-use App\Application\Sorting\SortingApplicator;
+use App\Domain\Payroll\Filter\FilterApplicator;
+use App\Domain\Payroll\PayrollView;
+use App\Domain\Payroll\PayrollViewFactory;
+use App\Domain\Payroll\Sorting\SortingApplicator;
 use App\Domain\Employee;
 use App\Domain\EmployeeRepository;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;

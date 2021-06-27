@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Sorting;
+namespace App\Domain\Payroll\Sorting;
 
 class Sorting
 {

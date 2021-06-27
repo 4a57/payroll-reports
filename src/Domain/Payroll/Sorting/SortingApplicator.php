@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Sorting;
+namespace App\Domain\Payroll\Sorting;
 
-use App\Application\PayrollView;
+use App\Domain\Payroll\PayrollView;
 
 class SortingApplicator
 {

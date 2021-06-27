@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Filter;
+namespace App\Domain\Payroll\Filter;
 
-use App\Application\PayrollView;
+use App\Domain\Payroll\PayrollView;
 
 class FilterApplicator
 {

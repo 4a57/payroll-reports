@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Infrastructure\Symfony\Command;
 
 use App\Application\GetPayrollReportQuery;
-use App\Application\PayrollView;
-use App\Application\Sorting\Sorting;
-use App\Application\Sorting\SortingDirection;
-use App\Application\Sorting\SortingField;
+use App\Domain\Payroll\PayrollView;
+use App\Domain\Payroll\Sorting\Sorting;
+use App\Domain\Payroll\Sorting\SortingDirection;
+use App\Domain\Payroll\Sorting\SortingField;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;

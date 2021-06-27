@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Symfony\Command;
 
-use App\Application\PayrollView;
+use App\Domain\Payroll\PayrollView;
 
 class PayrollViewSerializer
 {

@@ -43,7 +43,7 @@ services:
         autoconfigure: false
 
     app.payroll_view_factory:
-        class: App\Application\PayrollViewFactory
+        class: App\Domain\Payroll\PayrollViewFactory
         arguments:
             - '@app.bonus_calculator'
             - '@app.clock'
@@ -69,7 +69,7 @@ services:
         class: App\Infrastructure\System\Clock
 
     app.sorting_applicator:
-        class: App\Application\Sorting\SortingApplicator
+        class: App\Domain\Payroll\Sorting\SortingApplicator
 
     app.filter_applicator:
-        class: App\Application\Filter\FilterApplicator
+        class: App\Domain\Payroll\Filter\FilterApplicator

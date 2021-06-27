@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Tests\Functional\Application;
 
 use App\Application\GetPayrollReportQuery;
-use App\Application\PayrollView;
-use App\Application\Sorting\Sorting;
-use App\Application\Sorting\SortingDirection;
-use App\Application\Sorting\SortingField;
+use App\Domain\Payroll\PayrollView;
+use App\Domain\Payroll\Sorting\Sorting;
+use App\Domain\Payroll\Sorting\SortingDirection;
+use App\Domain\Payroll\Sorting\SortingField;
 use App\Domain\BonusType;
 use App\Domain\Department;
 use App\Domain\Employee;

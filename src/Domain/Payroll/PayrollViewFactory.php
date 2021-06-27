@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application;
+namespace App\Domain\Payroll;
 
 use App\Domain\BonusCalculator\BonusCalculator;
 use App\Domain\Clock;

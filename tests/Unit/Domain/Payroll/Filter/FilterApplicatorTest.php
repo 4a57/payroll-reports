@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Application\Filter;
+namespace Tests\Unit\Domain\Payroll\Filter;
 
-use App\Application\Filter\Filter;
-use App\Application\Filter\FilterApplicator;
-use App\Application\Filter\FilterField;
-use App\Application\PayrollView;
+use App\Domain\Payroll\Filter\FilterApplicator;
+use App\Domain\Payroll\PayrollView;
 use PHPUnit\Framework\TestCase;
 
 class FilterApplicatorTest extends TestCase
