@@ -1,7 +1,7 @@
 # Payroll Reports
 
 ## Wstęp
-Na wstępie zaznaczę, że w projekcie jest sporo overengineeringu, ale chyba o to chodzi w takich zadaniach :) Podejście, którego użyłem nie jest najlepsze dla większości sytuacji (cała logika, filtrowanie i sortowanie w pamięci PHP), ale dzięki temu mogłem pokazać trochę więcej kodu. W normalnej sytuacji dla takiego przykładu zrobiłbym pewnie jedno query i wrzucił to wszystko w ładne zapytanie do bazy.
+Tytułem wstępu - w projekcie jest sporo overengineeringu, ale chyba o to chodzi w takich zadaniach :) Podejście, którego użyłem nie jest najlepsze dla większości sytuacji (cała logika, filtrowanie i sortowanie w pamięci PHP), ale dzięki temu mogłem pokazać trochę więcej kodu. W normalnej sytuacji dla takiego przykładu zrobiłbym pewnie jedno query i wrzucił to wszystko w ładne zapytanie do bazy.
 
 ## Obsługa
 Projekt jest postawiony na dockerze i można go odpalić jedną komendą.
