@@ -21,7 +21,7 @@ class Employee
     #[ORM\Column(type: 'string', length: 255)]
     private string $lastName;
 
-    #[ORM\ManyToOne(targetEntity: Department::class)]
+    #[ORM\ManyToOne(targetEntity: Department::class, fetch: 'EAGER')]
     private Department $department;
 
     #[ORM\Column(type: 'integer')]
